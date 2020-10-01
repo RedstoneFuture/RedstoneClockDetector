@@ -5,6 +5,10 @@ import java.util.Map.Entry;
 import net.daboross.bukkitdev.redstoneclockdetector.RCDPlugin;
 import net.daboross.bukkitdev.redstoneclockdetector.utils.AbstractCommand;
 import net.daboross.bukkitdev.redstoneclockdetector.utils.UsageException;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -39,9 +43,16 @@ public class ListCommand extends AbstractCommand {
             for (int i = startIndex, e = Math.min(startIndex + this.pageSize, actList.size()); i < e; ++i) {
                 Entry<Location, Integer> entry = actList.get(i);
                 Location l = entry.getKey();
-                sender.sendMessage(String.format(
+                BaseComponent[] components = TextComponent.fromLegacyText(String.format(
                         ChatColor.YELLOW.toString() + "%d" + ChatColor.WHITE + ". " + ChatColor.GREEN + "(%d, %d, %d) %s " + ChatColor.DARK_GREEN + "%d",
                         i + 1, l.getBlockX(), l.getBlockY(), l.getBlockZ(), l.getWorld().getName(), entry.getValue()));
+                ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rcd tp " + (i + 1));
+                HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.BLUE + "Click to teleport to " + (i + 1)));
+                for (BaseComponent component : components) {
+                    component.setClickEvent(clickEvent);
+                    component.setHoverEvent(hoverEvent);
+                }
+                sender.spigot().sendMessage(components);
             }
         }
         return true;
