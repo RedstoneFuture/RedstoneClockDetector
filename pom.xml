@@ -2,13 +2,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.daboross.bukkitdev</groupId>
-    <version>0.2.7-b${env.BUILD_NUMBER}</version>
+    <version>0.3-SNAPSHOT</version>
     <artifactId>redstone-clock-detector</artifactId>
     <packaging>jar</packaging>
 
     <name>RedstoneClockDetector</name>
-    <description>Bukkit plugin to detect redstone clocks</description>
-    <url>https://github.com/daboross/RedstoneClockDetector/</url>
+    <description>Spigot plugin to detect redstone clocks</description>
+    <url>https://github.com/Minebench/RedstoneClockDetector/</url>
     <inceptionYear>2011</inceptionYear>
     <licenses>
         <license>
@@ -18,22 +18,23 @@
     </licenses>
     <developers>
         <developer>
-            <id>daboross</id>
-            <name>Dabo Ross</name>
-            <email>daboross@daboross.net</email>
-            <url>http://www.daboross.net</url>
-            <timezone>-8</timezone>
+            <id>phoenix616</id>
+            <name>Phoenix616</name>
+            <email>max@themoep.de</email>
+            <url>https://phoenix616.dev</url>
+            <timezone>+1</timezone>
         </developer>
     </developers>
 
     <scm>
-        <url>https://github.com/daboross/RedstoneClockDetector.git</url>
-        <connection>scm:git:https://github.com/daboross/RedstoneClockDetector.git</connection>
-        <developerConnection>scm:git:git@github.com:daboross/RedstoneClockDetector.git</developerConnection>
+        <url>https://github.com/Minebench/RedstoneClockDetector.git</url>
+        <connection>scm:git:https://github.com/Minebench/RedstoneClockDetector.git</connection>
+        <developerConnection>scm:git:git@github.com:Minebench/RedstoneClockDetector.git</developerConnection>
     </scm>
     <properties>
         <netbeans.hint.license>gpl30</netbeans.hint.license>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <minecraft.plugin.version>${project.version} ${buildDescription}</minecraft.plugin.version>
     </properties>
 
     <repositories>
@@ -48,8 +49,8 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.14.4-R0.1-SNAPSHOT</version>
         </dependency>        
         <dependency>
@@ -60,33 +61,46 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>static_build_number</id>
+            <activation>
+                <property>
+                    <name>!env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <buildNumber>0</buildNumber>
+                <buildDescription>(compiled at ${maven.build.timestamp})</buildDescription>
+            </properties>
+        </profile>
+        <profile>
+            <id>dynamic_build_number</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <buildNumber>${env.BUILD_NUMBER}</buildNumber>
+                <buildDescription>(build ${env.BUILD_NUMBER})</buildDescription>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>${project.name}</finalName>
         <defaultGoal>clean package</defaultGoal>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
     <issueManagement>
-        <url>https://github.com/daboross/RedstoneClockDetector/issues</url>
+        <url>https://github.com/Minebench/RedstoneClockDetector/issues</url>
         <system>Github Issues</system>
     </issueManagement>
 </project>
