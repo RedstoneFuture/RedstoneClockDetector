@@ -48,7 +48,7 @@ public class StartCommand extends AbstractCommand {
 
         @Override
         public void onProgress(int secondsRemaining) {
-	    String header = ChatColor.WHITE + "[" + ChatColor.YELLOW + "RCD" + ChatColor.WHITE + "] ";
+            String header = ChatColor.WHITE + "[" + ChatColor.YELLOW + "RCD" + ChatColor.WHITE + "] ";
             if (secondsRemaining <= 0) {
                 finishCallback.onFinish();
             } else if (secondsRemaining <= 5) {

@@ -91,7 +91,7 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
                 new StopCommand(null, this),
                 listCommand,
                 chunklistCommand,
-		hopperChunklistCommand,
+        hopperChunklistCommand,
                 new TeleportCommand(null, this),
                 new BreakCommand(null, this)};
             this.topCommand = new StatusCommand("  Status of plugin.",
@@ -206,23 +206,23 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItem(final InventoryMoveItemEvent event){
-			if (this.taskId == Integer.MIN_VALUE) {
-			    return;
-			}
-            if (event.getSource().getType().equals(InventoryType.HOPPER) || (event.getSource().getType().equals(InventoryType.DROPPER))) {
-                InventoryHolder ih = event.getSource().getHolder();
-                if ((ih instanceof Dropper) || (ih instanceof Hopper)) {
-                	BlockState block = (BlockState) ih;
-                	Location loc = block.getLocation();
-                	if (loc != null) {
-                		int count = 1;
-                        if (this.hopperChunkActivityTable.containsKey(loc.getChunk())) {
-                            count += this.hopperChunkActivityTable.get(loc.getChunk());
-                        }
-                        this.hopperChunkActivityTable.put(loc.getChunk(), count);
-                	}
+        if (this.taskId == Integer.MIN_VALUE) {
+            return;
+        }
+        if (event.getSource().getType().equals(InventoryType.HOPPER) || (event.getSource().getType().equals(InventoryType.DROPPER))) {
+            InventoryHolder ih = event.getSource().getHolder();
+            if ((ih instanceof Dropper) || (ih instanceof Hopper)) {
+                BlockState block = (BlockState) ih;
+                Location loc = block.getLocation();
+                if (loc != null) {
+                    int count = 1;
+                    if (this.hopperChunkActivityTable.containsKey(loc.getChunk())) {
+                        count += this.hopperChunkActivityTable.get(loc.getChunk());
+                    }
+                    this.hopperChunkActivityTable.put(loc.getChunk(), count);
                 }
             }
+        }
                     
     }
 
