@@ -3,8 +3,10 @@ package net.daboross.bukkitdev.redstoneclockdetector;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 
@@ -25,6 +27,7 @@ import net.daboross.bukkitdev.redstoneclockdetector.utils.UsageException;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Dropper;
@@ -43,6 +46,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
 
+    protected Set<String> ignoredWorlds;
     protected HashMap<Location, Integer> redstoneActivityTable = null;
     protected HashMap<Chunk, Integer> redstoneChunkActivityTable = null;
     protected HashMap<Chunk, Integer> hopperChunkActivityTable = null;
@@ -78,6 +82,9 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        this.saveDefaultConfig();
+        this.reloadConfig();
+        this.ignoredWorlds = new HashSet<>(this.getConfig().getStringList("ignored-worlds"));
         this.getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -182,9 +189,13 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
         this.hopperChunkActivityList.addAll(sortedMap.entrySet());
     }
 
+    private boolean isIgnored(World world) {
+        return world == null || ignoredWorlds.contains(world.getName());
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockRedstoneChange(BlockPhysicsEvent event) {
-        if (this.taskId == Integer.MIN_VALUE) {
+        if (this.taskId == Integer.MIN_VALUE || isIgnored(event.getBlock().getWorld())) {
             return;
         }
         Block block = event.getBlock();
@@ -217,8 +228,8 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
             InventoryHolder ih = event.getSource().getHolder();
             if ((ih instanceof Dropper) || (ih instanceof Hopper)) {
                 BlockState block = (BlockState) ih;
-                Location loc = block.getLocation();
-                if (loc != null) {
+                if (!isIgnored(block.getWorld())) {
+                    Location loc = block.getLocation();
                     int count = 1;
                     if (this.hopperChunkActivityTable.containsKey(loc.getChunk())) {
                         count += this.hopperChunkActivityTable.get(loc.getChunk());
