@@ -126,6 +126,10 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
         return this.worker.getSecondsRemain();
     }
 
+    public Worker getWorker() {
+        return worker;
+    }
+
     public boolean start(CommandSender sender, int seconds, IProgressReporter progressReporter) {
         if (this.taskId != Integer.MIN_VALUE) {
             return false;
@@ -247,6 +251,8 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
     public interface IProgressReporter {
 
         public void onProgress(int secondsRemain);
+
+        void addSender(CommandSender seconds);
     }
 
     @AllArgsConstructor
@@ -271,6 +277,9 @@ public class RCDPlugin extends JavaPlugin implements CommandExecutor, Listener {
 
         }
 
+        public IProgressReporter getReporter() {
+            return progressReporter;
+        }
     }
 
     @AllArgsConstructor

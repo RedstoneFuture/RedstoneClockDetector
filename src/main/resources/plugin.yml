@@ -21,6 +21,8 @@ permissions:
       redstoneclockdetector.list: true
       redstoneclockdetector.tp: true
       redstoneclockdetector.break: true
+      redclockdetector.broadcast.send: true
+      redclockdetector.broadcast.receive: true
   redstoneclockdetector:
     description: Show status of plugin.
   redstoneclockdetector.start:
@@ -33,6 +35,9 @@ permissions:
     description: Teleport a player to a location in list.
   redstoneclockdetector.break:
     description: Break the block at a location in list.
-    
+  redclockdetector.broadcast.send:
+    description: Start a search which broadcasts to all users with redclockdetector.broadcast.receive permission.
+  redclockdetector.broadcast.receive:
+    description: Receive informations about searches started with the broadcast option.
 
  
