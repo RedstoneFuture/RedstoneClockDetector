@@ -60,7 +60,7 @@ public class TeleportCommand extends AbstractCommand {
         }
         List<Entry<Location, Integer>> actList = this.plugin.getRedstoneActivityList();
         if (tpNum >= actList.size()) {
-            sender.sendMessage("Location num " + ChatColor.YELLOW + (tpNum + 1) + ChatColor.WHITE + "does not exist.");
+            sender.sendMessage("Location num " + ChatColor.YELLOW + (tpNum + 1) + " " + ChatColor.WHITE + "does not exist.");
         } else {
             player.teleport(actList.get(tpNum).getKey());
             if (player == sender) {
